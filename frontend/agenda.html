@@ -1,60 +1,62 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Meeting Generator – Agenda</title>
-  <link rel="stylesheet" href="css/main.css" />
-  <link rel="stylesheet" href="css/agenda.css" />
-</head>
-<body>
-  <nav class="navbar">
-    <span class="nav-brand">Meeting Generator</span>
-    <div class="nav-links">
-      <a href="dashboard.html">Dashboard</a>
-      <a href="employees.html">Employees</a>
-      <button id="logout-btn" class="btn btn-primary">Log Out</button>
-    </div>
-  </nav>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meeting Generator – Agenda</title>
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/agenda.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <span class="nav-brand">Meeting Generator</span>
+      <div class="nav-links">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="employees.html">Employees</a>
+        <button id="logout-btn" class="btn btn-primary">Log Out</button>
+      </div>
+    </nav>
 
-  <main class="agenda-container">
-    <div class="agenda-toolbar">
-      <button id="edit-btn" class="btn btn-secondary">Edit</button>
-      <button id="generate-pdf-btn" class="btn btn-primary">Generate PDF</button>
-      <button id="email-btn" class="btn btn-primary">Email Attendees</button>
-    </div>
-
-    <div class="agenda-card" id="agenda-card">
-      <h1 id="agenda-title"></h1>
-      <div class="agenda-meta">
-        <span id="agenda-location"></span>
-        <span id="agenda-time"></span>
+    <main class="agenda-container">
+      <div class="agenda-toolbar">
+        <button id="edit-btn" class="btn btn-secondary">Edit</button>
+        <button id="generate-pdf-btn" class="btn btn-primary">
+          Generate PDF
+        </button>
+        <button id="email-btn" class="btn btn-primary">Email Attendees</button>
       </div>
 
-      <section class="agenda-section">
-        <h2>Topics</h2>
-        <ol id="agenda-topics" class="agenda-topics"></ol>
-      </section>
+      <div class="agenda-card" id="agenda-card">
+        <h1 id="agenda-title"></h1>
+        <div class="agenda-meta">
+          <span id="agenda-location"></span>
+          <span id="agenda-time"></span>
+        </div>
 
-      <section class="agenda-section">
-        <h2>Attendees</h2>
-        <ul id="agenda-attendees" class="agenda-attendees"></ul>
-      </section>
-    </div>
-  </main>
+        <section class="agenda-section">
+          <h2>Topics</h2>
+          <ol id="agenda-topics" class="agenda-topics"></ol>
+        </section>
 
-  <!-- Modal -->
-  <div id="modal-overlay" class="modal-overlay hidden">
-    <div class="modal">
-      <p id="modal-message"></p>
-      <div class="modal-actions">
-        <button id="modal-yes" class="btn btn-primary">Yes</button>
-        <button id="modal-no" class="btn btn-secondary">No</button>
+        <section class="agenda-section">
+          <h2>Attendees</h2>
+          <ul id="agenda-attendees" class="agenda-attendees"></ul>
+        </section>
+      </div>
+    </main>
+
+    <!-- Modal -->
+    <div id="modal-overlay" class="modal-overlay hidden">
+      <div class="modal">
+        <p id="modal-message"></p>
+        <div class="modal-actions">
+          <button id="modal-yes" class="btn btn-primary">Yes</button>
+          <button id="modal-no" class="btn btn-secondary">No</button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <script type="module" src="js/main.js"></script>
-  <script type="module" src="js/agenda.js"></script>
-</body>
+    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/agenda.js"></script>
+  </body>
 </html>

@@ -1,5 +1,5 @@
-import { MongoClient } from 'mongodb';
-import dotenv from 'dotenv';
+import { MongoClient } from "mongodb";
+import dotenv from "dotenv";
 dotenv.config();
 
 let db;
@@ -12,8 +12,8 @@ export async function connectDB() {
   db = client.db(process.env.DB_NAME);
   console.log(`Connected to MongoDB: ${process.env.DB_NAME}`);
 
-  client.on('close', () => {
-    console.warn('MongoDB connection lost. Reconnecting...');
+  client.on("close", () => {
+    console.warn("MongoDB connection lost. Reconnecting...");
     db = null;
     setTimeout(connectDB, 3000);
   });
@@ -22,6 +22,6 @@ export async function connectDB() {
 }
 
 export function getDB() {
-  if (!db) throw new Error('Database connection unavailable.');
+  if (!db) throw new Error("Database connection unavailable.");
   return db;
 }

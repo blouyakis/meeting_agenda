@@ -1,5 +1,13 @@
 // { _id, userId, title, location, startTime, endTime, topics: [{ text, priority }], attendeeIds: [], createdAt }
-export function createMeeting({ userId, title, location, startTime, endTime, topics, attendeeIds }) {
+export function createMeeting({
+  userId,
+  title,
+  location,
+  startTime,
+  endTime,
+  topics,
+  attendeeIds,
+}) {
   return {
     userId,
     title,

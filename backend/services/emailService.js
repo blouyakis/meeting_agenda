@@ -1,5 +1,5 @@
-import nodemailer from 'nodemailer';
-import dotenv from 'dotenv';
+import nodemailer from "nodemailer";
+import dotenv from "dotenv";
 dotenv.config();
 
 const transporter = nodemailer.createTransport({
@@ -11,12 +11,26 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export async function emailAgenda({ to, subject, html, pdfBuffer, pdfFilename }) {
+export async function emailAgenda({
+  to,
+  subject,
+  html,
+  pdfBuffer,
+  pdfFilename,
+}) {
   await transporter.sendMail({
     from: process.env.EMAIL_USER,
-    to: to.join(', '),
+    to: to.join(", "),
     subject,
     html,
-    attachments: pdfBuffer ? [{ filename: pdfFilename || 'agenda.pdf', content: pdfBuffer, contentType: 'application/pdf' }] : [],
+    attachments: pdfBuffer
+      ? [
+          {
+            filename: pdfFilename || "agenda.pdf",
+            content: pdfBuffer,
+            contentType: "application/pdf",
+          },
+        ]
+      : [],
   });
 }

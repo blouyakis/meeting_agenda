@@ -1,57 +1,59 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Meeting Generator – Employees</title>
-  <link rel="stylesheet" href="css/main.css" />
-  <link rel="stylesheet" href="css/employees.css" />
-</head>
-<body>
-  <nav class="navbar">
-    <span class="nav-brand">Meeting Generator</span>
-    <div class="nav-links">
-      <a href="dashboard.html">Dashboard</a>
-      <button id="logout-btn" class="btn btn-primary">Log Out</button>
-    </div>
-  </nav>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meeting Generator – Employees</title>
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/employees.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <span class="nav-brand">Meeting Generator</span>
+      <div class="nav-links">
+        <a href="dashboard.html">Dashboard</a>
+        <button id="logout-btn" class="btn btn-primary">Log Out</button>
+      </div>
+    </nav>
 
-  <main class="employees-container">
-    <div class="employees-header">
-      <h2>Employees</h2>
-      <button id="add-employee-btn" class="btn btn-primary">+ Add Employee</button>
-    </div>
-    <table id="employees-table" class="employees-table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Department</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="employees-tbody"></tbody>
-    </table>
-  </main>
+    <main class="employees-container">
+      <div class="employees-header">
+        <h2>Employees</h2>
+        <button id="add-employee-btn" class="btn btn-primary">
+          + Add Employee
+        </button>
+      </div>
+      <table id="employees-table" class="employees-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="employees-tbody"></tbody>
+      </table>
+    </main>
 
-  <!-- Add/Edit modal -->
-  <div id="employee-modal" class="modal-overlay hidden">
-    <div class="modal">
-      <h3 id="employee-modal-title">Add Employee</h3>
-      <label>First Name <input type="text" id="emp-first" /></label>
-      <label>Last Name <input type="text" id="emp-last" /></label>
-      <label>Department <input type="text" id="emp-department" /></label>
-      <label>Email <input type="email" id="emp-email" /></label>
-      <label>Phone <input type="tel" id="emp-phone" /></label>
-      <div class="modal-actions">
-        <button id="emp-save-btn" class="btn btn-primary">Save</button>
-        <button id="emp-cancel-btn" class="btn btn-secondary">Cancel</button>
+    <!-- Add/Edit modal -->
+    <div id="employee-modal" class="modal-overlay hidden">
+      <div class="modal">
+        <h3 id="employee-modal-title">Add Employee</h3>
+        <label>First Name <input type="text" id="emp-first" /></label>
+        <label>Last Name <input type="text" id="emp-last" /></label>
+        <label>Department <input type="text" id="emp-department" /></label>
+        <label>Email <input type="email" id="emp-email" /></label>
+        <label>Phone <input type="tel" id="emp-phone" /></label>
+        <div class="modal-actions">
+          <button id="emp-save-btn" class="btn btn-primary">Save</button>
+          <button id="emp-cancel-btn" class="btn btn-secondary">Cancel</button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <script type="module" src="js/main.js"></script>
-  <script type="module" src="js/employees.js"></script>
-</body>
+    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/employees.js"></script>
+  </body>
 </html>
