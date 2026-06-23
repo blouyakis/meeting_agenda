@@ -12,34 +12,61 @@
 //   Email:    demo@neu.edu
 //   Password: Northeastern
 
-import { MongoClient } from 'mongodb';
-import bcrypt from 'bcryptjs';
-import { readFileSync } from 'fs';
-import dotenv from 'dotenv';
+import { MongoClient } from "mongodb";
+import bcrypt from "bcryptjs";
+import { readFileSync } from "fs";
+import dotenv from "dotenv";
 dotenv.config();
 
-const DEMO_EMAIL = 'demo@neu.edu';
-const DEMO_PASSWORD = 'Northeastern';
+const DEMO_EMAIL = "demo@neu.edu";
+const DEMO_PASSWORD = "Northeastern";
 
 const meetingTitles = [
-  'Q3 Planning Session', 'Weekly Standup', 'Product Roadmap Review',
-  'Budget Review', 'Team Retrospective', 'All Hands Meeting',
-  'Sprint Planning', 'Department Sync', 'Strategy Session', 'Client Review',
-  'Onboarding Meeting', 'Performance Reviews', 'Annual Planning', 'OKR Review',
-  'Design Critique', 'Sales Pipeline Review', 'Engineering Sync', 'HR Update',
-  'Marketing Campaign Review', 'Operations Check-in',
+  "Q3 Planning Session",
+  "Weekly Standup",
+  "Product Roadmap Review",
+  "Budget Review",
+  "Team Retrospective",
+  "All Hands Meeting",
+  "Sprint Planning",
+  "Department Sync",
+  "Strategy Session",
+  "Client Review",
+  "Onboarding Meeting",
+  "Performance Reviews",
+  "Annual Planning",
+  "OKR Review",
+  "Design Critique",
+  "Sales Pipeline Review",
+  "Engineering Sync",
+  "HR Update",
+  "Marketing Campaign Review",
+  "Operations Check-in",
 ];
 
 const topicTexts = [
-  'Review project status', 'Discuss budget allocation', 'Team updates',
-  'Customer feedback review', 'Roadmap priorities', 'Hiring updates',
-  'Quarterly goals', 'Process improvements', 'Risk assessment',
-  'Action item review', 'Upcoming deadlines', 'Resource planning',
+  "Review project status",
+  "Discuss budget allocation",
+  "Team updates",
+  "Customer feedback review",
+  "Roadmap priorities",
+  "Hiring updates",
+  "Quarterly goals",
+  "Process improvements",
+  "Risk assessment",
+  "Action item review",
+  "Upcoming deadlines",
+  "Resource planning",
 ];
 
 const locations = [
-  'Conference Room A', 'Conference Room B', 'Main Boardroom',
-  'Zoom', 'Google Meet', 'Teams Call', 'Office 201',
+  "Conference Room A",
+  "Conference Room B",
+  "Main Boardroom",
+  "Zoom",
+  "Google Meet",
+  "Teams Call",
+  "Office 201",
 ];
 
 function pick(arr) {
@@ -52,7 +79,7 @@ function randomDatetime(daysOffset = 0) {
   base.setHours(8 + Math.floor(Math.random() * 9));
   base.setMinutes(pick([0, 15, 30, 45]));
   base.setSeconds(0);
-  const pad = (n) => String(n).padStart(2, '0');
+  const pad = (n) => String(n).padStart(2, "0");
   return `${base.getFullYear()}-${pad(base.getMonth() + 1)}-${pad(base.getDate())}T${pad(base.getHours())}:${pad(base.getMinutes())}`;
 }
 
@@ -64,14 +91,14 @@ async function seed() {
   console.log(`Connected to: ${process.env.DB_NAME}`);
 
   // ── clear previous seed data ──────────────────────────────────────────────
-  await db.collection('users').deleteMany({ email: DEMO_EMAIL });
-  await db.collection('employees').deleteMany({ seeded: true });
-  await db.collection('meetings').deleteMany({ seeded: true });
-  console.log('Cleared existing seed data');
+  await db.collection("users").deleteMany({ email: DEMO_EMAIL });
+  await db.collection("employees").deleteMany({ seeded: true });
+  await db.collection("meetings").deleteMany({ seeded: true });
+  console.log("Cleared existing seed data");
 
   // ── create demo user ──────────────────────────────────────────────────────
   const passwordHash = await bcrypt.hash(DEMO_PASSWORD, 10);
-  const userResult = await db.collection('users').insertOne({
+  const userResult = await db.collection("users").insertOne({
     email: DEMO_EMAIL,
     passwordHash,
     createdAt: new Date(),
@@ -84,10 +111,12 @@ async function seed() {
   // map them to firstName and lastName to match your employeeModel.js
   let raw;
   try {
-    raw = readFileSync('./backend/employees.json', 'utf-8');
+    raw = readFileSync("./backend/employees.json", "utf-8");
   } catch {
-    console.error('ERROR: backend/employees.json not found.');
-    console.error('Download it from Mockaroo and place it in your backend/ folder.');
+    console.error("ERROR: backend/employees.json not found.");
+    console.error(
+      "Download it from Mockaroo and place it in your backend/ folder.",
+    );
     await client.close();
     process.exit(1);
   }
@@ -95,25 +124,30 @@ async function seed() {
   const mockarooData = JSON.parse(raw);
   const employees = mockarooData.map((e) => ({
     userId,
-    firstName: e.first_name,   // Mockaroo uses snake_case
-    lastName: e.last_name,     // Mockaroo uses snake_case
-    email: e.email || '',
-    phone: e.phone || '',
-    department: e.department || '',
+    firstName: e.first_name, // Mockaroo uses snake_case
+    lastName: e.last_name, // Mockaroo uses snake_case
+    email: e.email || "",
+    phone: e.phone || "",
+    department: e.department || "",
     seeded: true,
   }));
 
-  const empResult = await db.collection('employees').insertMany(employees);
+  const empResult = await db.collection("employees").insertMany(employees);
   console.log(`Inserted ${employees.length} employees from Mockaroo`);
 
   // ── generate 20 meetings using real employee IDs ──────────────────────────
-  const allEmployeeIds = Object.values(empResult.insertedIds).map((id) => id.toString());
+  const allEmployeeIds = Object.values(empResult.insertedIds).map((id) =>
+    id.toString(),
+  );
 
   const meetings = Array.from({ length: 20 }, (_, i) => {
     const startTime = randomDatetime(i - 10);
-    const [datePart, timePart] = startTime.split('T');
-    const endHour = String(parseInt(timePart.split(':')[0]) + 1).padStart(2, '0');
-    const endTime = `${datePart}T${endHour}:${timePart.split(':')[1]}`;
+    const [datePart, timePart] = startTime.split("T");
+    const endHour = String(parseInt(timePart.split(":")[0]) + 1).padStart(
+      2,
+      "0",
+    );
+    const endTime = `${datePart}T${endHour}:${timePart.split(":")[1]}`;
 
     const shuffled = [...allEmployeeIds].sort(() => Math.random() - 0.5);
     const attendeeIds = shuffled.slice(0, Math.floor(Math.random() * 6) + 3);
@@ -122,7 +156,7 @@ async function seed() {
     const topics = Array.from({ length: topicCount }, () => ({
       text: pick(topicTexts),
       priority: Math.floor(Math.random() * 3) + 1,
-      notes: '',
+      notes: "",
       actionItems: [],
     }));
 
@@ -139,20 +173,20 @@ async function seed() {
     };
   });
 
-  await db.collection('meetings').insertMany(meetings);
+  await db.collection("meetings").insertMany(meetings);
   console.log(`Inserted ${meetings.length} meetings`);
 
   // ── summary ───────────────────────────────────────────────────────────────
-  const empCount = await db.collection('employees').countDocuments();
-  const meetCount = await db.collection('meetings').countDocuments();
-  const userCount = await db.collection('users').countDocuments();
+  const empCount = await db.collection("employees").countDocuments();
+  const meetCount = await db.collection("meetings").countDocuments();
+  const userCount = await db.collection("users").countDocuments();
 
-  console.log('\n── Database summary ──────────────────────');
+  console.log("\n── Database summary ──────────────────────");
   console.log(`  users:     ${userCount}`);
   console.log(`  employees: ${empCount}`);
   console.log(`  meetings:  ${meetCount}`);
   console.log(`  total:     ${empCount + meetCount + userCount}`);
-  console.log('\nSeed complete. Share these credentials:');
+  console.log("\nSeed complete. Share these credentials:");
   console.log(`  Email:    ${DEMO_EMAIL}`);
   console.log(`  Password: ${DEMO_PASSWORD}`);
 
@@ -160,6 +194,6 @@ async function seed() {
 }
 
 seed().catch((err) => {
-  console.error('Seed failed:', err);
+  console.error("Seed failed:", err);
   process.exit(1);
 });

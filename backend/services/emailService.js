@@ -26,7 +26,7 @@ export async function emailAgenda({
     attachments: pdfBuffer
       ? [
           {
-            filename: pdfFilename || 'agenda.pdf',
+            filename: pdfFilename || "agenda.pdf",
             content: pdfBuffer,
             contentType: "application/pdf",
           },

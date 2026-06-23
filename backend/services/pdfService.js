@@ -1,16 +1,16 @@
-import PDFDocument from 'pdfkit';
-import { allocateTopicTimes } from '../utils/timeAllocation.js';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import PDFDocument from "pdfkit";
+import { allocateTopicTimes } from "../utils/timeAllocation.js";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 function formatDateTime(str) {
-  const [date, time] = str.split('T');
-  const [year, month, day] = date.split('-');
-  const [hour, min] = time.split(':');
+  const [date, time] = str.split("T");
+  const [year, month, day] = date.split("-");
+  const [hour, min] = time.split(":");
   const h = parseInt(hour);
-  const ampm = h >= 12 ? 'PM' : 'AM';
+  const ampm = h >= 12 ? "PM" : "AM";
   const h12 = h % 12 || 12;
   return `${month}/${day}/${year}, ${h12}:${min} ${ampm}`;
 }
@@ -19,71 +19,122 @@ export function generateAgendaPDF(meeting, attendees, steepness = 0.5) {
   return new Promise((resolve, reject) => {
     const doc = new PDFDocument({ bufferPages: true, margin: 0 });
     const chunks = [];
-    doc.on('data', (chunk) => chunks.push(chunk));
-    doc.on('end', () => resolve(Buffer.concat(chunks)));
-    doc.on('error', reject);
-    const logoPath = join(__dirname, '../../frontend/images/logo.png');
+    doc.on("data", (chunk) => chunks.push(chunk));
+    doc.on("end", () => resolve(Buffer.concat(chunks)));
+    doc.on("error", reject);
+    const logoPath = join(__dirname, "../../frontend/images/logo.png");
 
     const W = doc.page.width;
     const MARGIN = 48;
-    const BURGUNDY = '#7b2d42';
-    const DARK_BURGUNDY = '#5a1f30';
-    const LIGHT_CREAM = '#fdf0f3';
-    const MUTED_CREAM = '#f5ede0';
-    const ROSE = '#c9956a';
-    const GRAY = '#9c6070';
-    const LIGHT_GRAY = '#f7dde4';
-    const BORDER = '#edc4ce';
-    const TEXT = '#3d0f1c';
+    const BURGUNDY = "#7b2d42";
+    const LIGHT_CREAM = "#fdf0f3";
+    const MUTED_CREAM = "#f5ede0";
+    const GRAY = "#9c6070";
+    const LIGHT_GRAY = "#f7dde4";
+    const BORDER = "#edc4ce";
+    const TEXT = "#3d0f1c";
 
     let y = 0;
 
     doc.rect(0, 0, W, 110).fill(BURGUNDY);
-    doc.circle(W - MARGIN - 40, 55, 45).fill('#ffffff');
+    doc.circle(W - MARGIN - 40, 55, 45).fill("#ffffff");
     doc.image(logoPath, W - MARGIN - 62, 28, { width: 44, height: 54 });
 
-    doc.fillColor(LIGHT_CREAM).fontSize(9).text('MEETING AGENDA', MARGIN, 24, { characterSpacing: 1.5 });
+    doc
+      .fillColor(LIGHT_CREAM)
+      .fontSize(9)
+      .text("MEETING AGENDA", MARGIN, 24, { characterSpacing: 1.5 });
 
-    doc.fillColor('#ffffff').fontSize(18).text(meeting.title, MARGIN, 38, { width: W - MARGIN * 2 });
+    doc
+      .fillColor("#ffffff")
+      .fontSize(18)
+      .text(meeting.title, MARGIN, 38, { width: W - MARGIN * 2 });
 
     y = 68;
     const meta = [];
     if (meeting.location) meta.push(`${meeting.location}`);
     if (meeting.startTime && meeting.endTime) {
-      meta.push(`${formatDateTime(meeting.startTime)} – ${formatDateTime(meeting.endTime)}`);
+      meta.push(
+        `${formatDateTime(meeting.startTime)} – ${formatDateTime(meeting.endTime)}`,
+      );
     } else if (meeting.startTime) {
       meta.push(formatDateTime(meeting.startTime));
     }
-    doc.fillColor(MUTED_CREAM).fontSize(10).text(meta.join('   |   '), MARGIN, y, { width: W - MARGIN * 2 });
+    doc
+      .fillColor(MUTED_CREAM)
+      .fontSize(10)
+      .text(meta.join("   |   "), MARGIN, y, { width: W - MARGIN * 2 });
 
     y = 130;
 
-    doc.fillColor(GRAY).fontSize(8).text('ATTENDEES', MARGIN, y, { characterSpacing: 1 });
+    doc
+      .fillColor(GRAY)
+      .fontSize(8)
+      .text("ATTENDEES", MARGIN, y, { characterSpacing: 1 });
     y += 14;
-    doc.moveTo(MARGIN, y).lineTo(W - MARGIN, y).strokeColor(BORDER).lineWidth(0.5).stroke();
+    doc
+      .moveTo(MARGIN, y)
+      .lineTo(W - MARGIN, y)
+      .strokeColor(BORDER)
+      .lineWidth(0.5)
+      .stroke();
     y += 8;
 
     if (attendees.length) {
-      const names = attendees.map((a) => `${a.lastName}, ${a.firstName}`).join('   ·   ');
-      doc.fillColor(TEXT).fontSize(11).text(names, MARGIN, y, { width: W - MARGIN * 2 });
+      const names = attendees
+        .map((a) => `${a.lastName}, ${a.firstName}`)
+        .join("   ·   ");
+      doc
+        .fillColor(TEXT)
+        .fontSize(11)
+        .text(names, MARGIN, y, { width: W - MARGIN * 2 });
       y += doc.heightOfString(names, { width: W - MARGIN * 2 }) + 16;
     } else {
-      doc.fillColor(GRAY).fontSize(11).text('No attendees listed.', MARGIN, y);
+      doc.fillColor(GRAY).fontSize(11).text("No attendees listed.", MARGIN, y);
       y += 24;
     }
 
-    doc.fillColor(GRAY).fontSize(8).text('AGENDA', MARGIN, y, { characterSpacing: 1 });
+    doc
+      .fillColor(GRAY)
+      .fontSize(8)
+      .text("AGENDA", MARGIN, y, { characterSpacing: 1 });
     y += 14;
-    doc.moveTo(MARGIN, y).lineTo(W - MARGIN, y).strokeColor(BORDER).lineWidth(0.5).stroke();
+    doc
+      .moveTo(MARGIN, y)
+      .lineTo(W - MARGIN, y)
+      .strokeColor(BORDER)
+      .lineWidth(0.5)
+      .stroke();
     y += 8;
 
     const topics =
       meeting.startTime && meeting.endTime
-        ? allocateTopicTimes(meeting.topics, meeting.startTime, meeting.endTime, steepness)
+        ? allocateTopicTimes(
+            meeting.topics,
+            meeting.startTime,
+            meeting.endTime,
+            steepness,
+          )
         : [...meeting.topics].sort((a, b) => a.priority - b.priority);
 
-    topics.forEach((t, idx) => {
-      const rowHeight = t.notes || t.actionItems?.length ? 52 : 36;
+    topics.forEach((t) => {
+      const textHeight = doc.heightOfString(t.text, {
+        width: W - MARGIN * 2 - 140,
+      });
+      const notesHeight = t.notes
+        ? doc.heightOfString(`Notes: ${t.notes}`, {
+            width: W - MARGIN * 2 - 140,
+          }) + 8
+        : 0;
+      const actionsHeight = t.actionItems?.length
+        ? doc.heightOfString(`Actions: ${t.actionItems.join(", ")}`, {
+            width: W - MARGIN * 2 - 140,
+          }) + 8
+        : 0;
+      const rowHeight = Math.max(
+        36,
+        textHeight + notesHeight + actionsHeight + 20,
+      );
 
       if (y + rowHeight > doc.page.height - 60) {
         doc.addPage({ margin: 0 });
@@ -92,36 +143,71 @@ export function generateAgendaPDF(meeting, attendees, steepness = 0.5) {
 
       doc.rect(MARGIN, y, 3, rowHeight - 4).fill(BURGUNDY);
 
-      doc.rect(MARGIN + 3, y, W - MARGIN * 2 - 3, rowHeight - 4).fill(LIGHT_GRAY);
+      doc
+        .rect(MARGIN + 3, y, W - MARGIN * 2 - 3, rowHeight - 4)
+        .fill(LIGHT_GRAY);
 
-      const timeStr = t.topicStart || '';
-      doc.fillColor(BURGUNDY).fontSize(10).text(timeStr, MARGIN + 12, y + 8, { width: 60 });
+      const timeStr = t.topicStart || "";
+      doc
+        .fillColor(BURGUNDY)
+        .fontSize(10)
+        .text(timeStr, MARGIN + 12, y + 8, { width: 60 });
 
-      doc.fillColor(TEXT).fontSize(11).text(t.text, MARGIN + 78, y + 8, { width: W - MARGIN * 2 - 140 });
+      doc
+        .fillColor(TEXT)
+        .fontSize(11)
+        .text(t.text, MARGIN + 78, y + 8, { width: W - MARGIN * 2 - 140 });
 
       if (t.minutes) {
         const pill = `${t.minutes} min`;
         const pillW = 48;
         doc.rect(W - MARGIN - pillW - 4, y + 6, pillW, 16).fill(BORDER);
-        doc.fillColor(GRAY).fontSize(9).text(pill, W - MARGIN - pillW - 4, y + 9, { width: pillW, align: 'center' });
+        doc
+          .fillColor(GRAY)
+          .fontSize(9)
+          .text(pill, W - MARGIN - pillW - 4, y + 9, {
+            width: pillW,
+            align: "center",
+          });
       }
 
       if (t.notes) {
-        doc.fillColor(GRAY).fontSize(9).text(`Notes: ${t.notes}`, MARGIN + 78, y + 24, { width: W - MARGIN * 2 - 140 });
+        doc
+          .fillColor(GRAY)
+          .fontSize(9)
+          .text(`Notes: ${t.notes}`, MARGIN + 78, y + 24, {
+            width: W - MARGIN * 2 - 140,
+          });
       }
 
       if (t.actionItems?.length) {
         const actionsY = t.notes ? y + 36 : y + 24;
-        doc.fillColor(GRAY).fontSize(9).text(`Actions: ${t.actionItems.join(', ')}`, MARGIN + 78, actionsY, { width: W - MARGIN * 2 - 140 });
+        doc
+          .fillColor(GRAY)
+          .fontSize(9)
+          .text(`Actions: ${t.actionItems.join(", ")}`, MARGIN + 78, actionsY, {
+            width: W - MARGIN * 2 - 140,
+          });
       }
 
       y += rowHeight + 4;
     });
 
     y += 16;
-    doc.moveTo(MARGIN, y).lineTo(W - MARGIN, y).strokeColor(BORDER).lineWidth(0.5).stroke();
+    doc
+      .moveTo(MARGIN, y)
+      .lineTo(W - MARGIN, y)
+      .strokeColor(BORDER)
+      .lineWidth(0.5)
+      .stroke();
     y += 8;
-    doc.fillColor(GRAY).fontSize(9).text('Generated by Agenda Agent', MARGIN, y, { width: W - MARGIN * 2, align: 'center' });
+    doc
+      .fillColor(GRAY)
+      .fontSize(9)
+      .text("Generated by Agenda Agent", MARGIN, y, {
+        width: W - MARGIN * 2,
+        align: "center",
+      });
 
     doc.end();
   });

@@ -23,13 +23,11 @@ router.post("/", async (req, res) => {
     .collection("actionItems")
     .findOne({ userId: req.userId, label: label.trim() });
   if (exists) return res.status(409).json({ error: "Already exists" });
-  await db
-    .collection("actionItems")
-    .insertOne({
-      userId: req.userId,
-      label: label.trim(),
-      createdAt: new Date(),
-    });
+  await db.collection("actionItems").insertOne({
+    userId: req.userId,
+    label: label.trim(),
+    createdAt: new Date(),
+  });
   res.status(201).json({ label: label.trim() });
 });
 
