@@ -21,6 +21,10 @@ app.use(passport.initialize());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "../frontend")));
 
+app.get('/', (req, res) => {
+  res.redirect(path.join('/auth.html'));
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/employees", employeeRoutes);
 app.use("/api/meetings", meetingRoutes);
