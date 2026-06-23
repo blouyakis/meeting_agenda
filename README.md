@@ -65,13 +65,14 @@ npm install
 Create a `.env` file in the project root with the following:
 
 ```
-MONGODB_URI=your_mongodb_connection_string
-DB_NAME=your_database_name
-JWT_SECRET=your_jwt_secret
-EMAIL_HOST=smtp.ethereal.email
+PORT=3000
+MONGODB_URI=mongodb+srv://meetingagenda:Northeastern@meeting-agenda.ueqoelw.mongodb.net/?appName=meeting-agenda
+DB_NAME=ai_meeting_generator
+JWT_SECRET=mG7$kP2#xQ9!vL4nR8wY3jD6hA1sB5
+EMAIL_HOST=smtp.gmail.com
 EMAIL_PORT=587
-EMAIL_USER=your_ethereal_user
-EMAIL_PASS=your_ethereal_pass
+EMAIL_USER=blouyakis@gmail.com
+EMAIL_PASS=sjcn hfgo iwmg frov
 ```
 
 ### Running the App
