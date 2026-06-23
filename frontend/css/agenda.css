@@ -26,6 +26,8 @@
   color: var(--text);
   margin-bottom: 0.5rem;
   line-height: 1.2;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .agenda-meta {

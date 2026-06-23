@@ -3,13 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Meeting Generator – New Meeting</title>
+    <title>Agenda Agent – New Meeting</title>
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="css/meetings.css" />
   </head>
   <body>
     <nav class="navbar">
-      <span class="nav-brand">Meeting Generator</span>
+      <div style="display:flex;align-items:center;gap:0.6rem;">
+        <img src="images/logo.svg" alt="logo" width="32" />
+        <span class="nav-brand">Agenda Agent</span>
+      </div>
       <div class="nav-links">
         <a href="dashboard.html">Dashboard</a>
         <a href="employees.html">Employees</a>
@@ -35,10 +38,14 @@
             <label for="meeting-end">End Time</label>
             <input type="datetime-local" id="meeting-end" />
             <label for="steepness-slider">Time Distribution</label>
-            
+
             <p class="hint">Left = equal time for all topics. Right = more time for top priorities.</p>
             <input type="range" id="steepness-slider" min="0" max="1" step="0.01" value="0.5" />
             <p id="steepness-preview" class="hint"></p>
+            <div id="pie-preview" style="display:none;margin-top:0.75rem;align-items:flex-start;gap:1rem;">
+              <canvas id="pie-canvas" width="160" height="160" style="flex-shrink:0;"></canvas>
+              <div id="pie-legend" style="font-size:0.8rem;line-height:1.8;padding-top:0.25rem;"></div>
+            </div>
 
             <div class="topics-section">
               <label>Meeting Topics</label>

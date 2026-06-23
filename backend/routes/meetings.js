@@ -33,8 +33,9 @@ router.get('/:id/pdf', async (req, res) => {
   const attendees = await db.collection('employees')
     .find({ _id: { $in: meeting.attendeeIds.map((id) => new ObjectId(id)) } })
     .toArray();
-  const pdf = await generateAgendaPDF(meeting, attendees);
-  res.set({ 'Content-Type': 'application/pdf', 'Content-Disposition': 'attachment; filename="agenda.pdf"' });
+  const pdf = await generateAgendaPDF(meeting, attendees, meeting.steepness ?? 0.5);
+  const safeTitle = (meeting.title || 'agenda').replace(/[^a-z0-9]/gi, '_');
+  res.set({ 'Content-Type': 'application/pdf', 'Content-Disposition': `attachment; filename="${safeTitle}.pdf"` });
   res.send(pdf);
 });
 
@@ -60,7 +61,7 @@ router.post('/:id/email', async (req, res) => {
     </li>`).join('');
   const attendeeList = attendees.map((a) => `<li>${a.lastName}, ${a.firstName}</li>`).join('');
   const timeLine = meeting.startTime ? `<p><b>Start:</b> ${formatDateTime(meeting.startTime)}</p>${meeting.endTime ? `<p><b>End:</b> ${formatDateTime(meeting.endTime)}</p>` : ''}` : '';
-  const pdfBuffer = await generateAgendaPDF(meeting, attendees);
+  const pdfBuffer = await generateAgendaPDF(meeting, attendees, meeting.steepness ?? 0.5);
   try {
     await emailAgenda({
       to: emails,

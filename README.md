@@ -1,4 +1,4 @@
-# Meeting Agenda Generator
+# AGENDA AGENT
 
 Meeting Agenda Generator using Node, Express, MongoDB, ES6 Vanilla, HTML5
 

@@ -76,7 +76,7 @@ async function loadAgenda() {
   });
 
   document.getElementById('generate-pdf-btn').addEventListener('click', async () => {
-    await downloadPDF();
+    await downloadPDF(meeting);
     const alsoEmail = await showModal('Would you also like to email the attendees?');
     if (alsoEmail) await sendEmail();
   });
@@ -84,7 +84,7 @@ async function loadAgenda() {
   document.getElementById('email-btn').addEventListener('click', async () => {
     await sendEmail();
     const alsoPDF = await showModal('Would you also like to generate a PDF?');
-    if (alsoPDF) await downloadPDF();
+    if (alsoPDF) await downloadPDF(meeting);
   });
 
   document.getElementById('save-actions-btn').addEventListener('click', () =>
@@ -149,7 +149,7 @@ async function saveActionItems(meeting) {
   }
 }
 
-async function downloadPDF() {
+async function downloadPDF(meeting) {
   const res = await fetch(`/api/meetings/${meetingId}/pdf`, {
     headers: { Authorization: `Bearer ${getToken()}` },
   });
@@ -157,7 +157,7 @@ async function downloadPDF() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'agenda.pdf';
+  a.download = `${(meeting?.title || 'agenda').replace(/[^a-z0-9]/gi, '_')}.pdf`;
   a.click();
 }
 

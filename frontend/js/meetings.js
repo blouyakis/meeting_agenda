@@ -104,22 +104,22 @@ function syncPriorityDropdowns() {
     const current = Number(select.value);
     select.innerHTML = Array.from({ length: N }, (_, i) => {
       const val = i + 1;
-      return `<option value="${val}" ${val === current ? 'selected' : ''}>Rank ${val}</option>`;
+      return `<option value="${val}" ${val === current ? 'selected' : ''}>Priority ${val}</option>`;
     }).join('');
   });
 
-  validateRanks();
+  validatePriority();
 }
 
-function validateRanks() {
+function validatePriority() {
   const rows = [...document.querySelectorAll('.topic-row')];
   const values = rows.map((r) => Number(r.querySelector('.topic-priority').value));
   const hasDuplicates = values.length !== new Set(values).size;
 
-  let warning = document.getElementById('rank-warning');
+  let warning = document.getElementById('priority-warning');
   if (!warning) {
     warning = document.createElement('p');
-    warning.id = 'rank-warning';
+    warning.id = 'priority-warning';
     warning.style.cssText = 'color:#dc2626;font-size:0.85rem;margin-top:0.25rem;';
     document.getElementById('topics-list').after(warning);
   }
@@ -128,7 +128,7 @@ function validateRanks() {
   const emailBtn = document.getElementById('email-btn');
   const saveBtn = document.getElementById('save-btn');
   if (hasDuplicates) {
-    warning.textContent = 'Each topic must have a unique rank before generating.';
+    warning.textContent = 'Each topic must have a unique priority before generating.';
     generateBtn.disabled = true;
     emailBtn.disabled = true;
     saveBtn.disabled = true;
@@ -161,7 +161,7 @@ function addTopic(text = '', priority = null, notes = '', actionItems = []) {
     <div class="topic-row-top">
       <input type="text" class="topic-text" placeholder="Topic" value="${text}" required />
       <select class="topic-priority">
-        <option value="${assignedPriority}" selected>Rank ${assignedPriority}</option>
+        <option value="${assignedPriority}" selected>Priority ${assignedPriority}</option>
       </select>
       <button type="button" class="btn btn-secondary btn-remove-topic">✕</button>
     </div>
@@ -389,17 +389,32 @@ async function emailMeeting(id) {
 //--Slider--
 const slider = document.getElementById('steepness-slider');
 const preview = document.getElementById('steepness-preview');
+const pieCanvas = document.getElementById('pie-canvas');
+const pieLegend = document.getElementById('pie-legend');
+const piePreview = document.getElementById('pie-preview');
 
-function updatePreview() {
+const PIE_COLORS = [
+  '#7b2d42',
+  '#c9956a',
+  '#9d3a54',
+  '#e8c4a0',
+  '#5a1f30',
+  '#d4a87a',
+  '#b05070',
+  '#f0dcc0',
+];
+function computeAllocations() {
   const startVal = document.getElementById('meeting-start').value;
   const endVal = document.getElementById('meeting-end').value;
-  const topics = [...document.querySelectorAll('.topic-row')];
-  if (!startVal || !endVal || topics.length === 0) {
-    if (preview) preview.textContent = 'Add topics and set times to see preview.';
-    return;
-  }
+  const topicRows = [...document.querySelectorAll('.topic-row')];
+  if (!startVal || !endVal || topicRows.length === 0) return null;
   const totalMinutes = Math.round((new Date(endVal) - new Date(startVal)) / 60000);
-  const N = topics.length;
+  if (totalMinutes <= 0) return null;
+  const sorted = [...topicRows]
+    .filter(r => r.querySelector('.topic-text').value.trim())
+    .sort((a, b) => Number(a.querySelector('.topic-priority').value) - Number(b.querySelector('.topic-priority').value));
+  if (sorted.length === 0) return null;
+  const N = sorted.length;
   const steepness = parseFloat(slider.value);
   const base = 1.0 + steepness * 2.0;
   const raw = Array.from({ length: N }, (_, i) => Math.pow(base, N - 1 - i));
@@ -417,15 +432,55 @@ function updatePreview() {
     const byFrac = floats.map((f, i) => ({ i, frac: f - Math.floor(f) })).sort((a, b) => b.frac - a.frac).map(x => x.i);
     for (let i = 0; i < remainder; i++) floored[byFrac[i]] += 1;
   }
-  const sorted = [...topics].sort((a, b) =>
-    Number(a.querySelector('.topic-priority').value) - Number(b.querySelector('.topic-priority').value)
-  );
-  if (preview) preview.textContent = sorted
-    .map((row, i) => {
-      const text = row.querySelector('.topic-text').value || `Topic ${i + 1}`;
-      return `${text}: ${floored[i]} min`;
-    })
-    .join('  ·  ');
+  return sorted.map((row, i) => ({
+    label: row.querySelector('.topic-text').value || `Topic ${i + 1}`,
+    minutes: floored[i],
+    total: totalMinutes,
+  }));
+}
+
+function drawPie(slices) {
+  if (!pieCanvas) return;
+  const ctx = pieCanvas.getContext('2d');
+  ctx.clearRect(0, 0, 240, 240);
+  const total = slices.reduce((a, b) => a + b.minutes, 0);
+  let start = -Math.PI / 2;
+  slices.forEach((s, i) => {
+    const angle = (s.minutes / total) * 2 * Math.PI;
+    ctx.beginPath();
+    ctx.moveTo(60, 60);
+    ctx.arc(60, 60, 56, start, start + angle);
+    ctx.closePath();
+    ctx.fillStyle = PIE_COLORS[i % PIE_COLORS.length];
+    ctx.fill();
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    start += angle;
+  });
+}
+
+function drawLegend(slices) {
+  if (!pieLegend) return;
+  pieLegend.innerHTML = slices.map((s, i) => `
+    <div style="display:flex;align-items:center;gap:6px;">
+      <span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${PIE_COLORS[i % PIE_COLORS.length]};flex-shrink:0;"></span>
+      <span>${s.label}: ${s.minutes} min</span>
+    </div>
+  `).join('');
+}
+
+function updatePreview() {
+  const slices = computeAllocations();
+  if (!slices) {
+    if (preview) preview.textContent = 'Add topics and set times to see preview.';
+    if (piePreview) piePreview.style.display = 'none';
+    return;
+  }
+  if (preview) preview.textContent = slices.map(s => `${s.label}: ${s.minutes} min`).join(', ');
+  if (piePreview) piePreview.style.display = 'flex';
+  drawPie(slices);
+  drawLegend(slices);
 }
 
 if (slider) {
@@ -433,4 +488,7 @@ if (slider) {
   document.getElementById('meeting-start').addEventListener('change', updatePreview);
   document.getElementById('meeting-end').addEventListener('change', updatePreview);
   document.getElementById('add-topic-btn').addEventListener('click', () => setTimeout(updatePreview, 50));
+  document.querySelectorAll('.topic-text, .topic-priority').forEach((el) =>
+    el.addEventListener('change', updatePreview)
+  );
 }
