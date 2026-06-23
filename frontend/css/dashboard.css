@@ -1,0 +1,11 @@
+.dashboard-container { max-width: 700px; margin: 2rem auto; padding: 0 1rem; }
+.dashboard-actions { margin-bottom: 1.5rem; }
+.meetings-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+.meetings-list li {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.75rem 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+}
+.meetings-list a { color: var(--primary); text-decoration: none; font-weight: 500; }
+.meeting-date { font-size: 0.875rem; color: var(--muted); }
+.btn-delete-meeting { background: #fee2e2; color: #dc2626; border: none; border-radius: var(--radius); padding: 0.25rem 0.75rem; font-size: 0.85rem; font-weight: 500; cursor: pointer; }
+.btn-delete-meeting:hover { background: #fecaca; }

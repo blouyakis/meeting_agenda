@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meeting Generator – New Meeting</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/meetings.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <span class="nav-brand">Meeting Generator</span>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="employees.html">Employees</a>
+      <button id="logout-btn" class="btn btn-primary">Log Out</button>
+    </div>
+  </nav>
+
+  <main class="meeting-form-container">
+    <h2>New Meeting</h2>
+    <form id="meeting-form">
+      <div class="form-columns">
+
+        <!-- Left column -->
+        <div class="form-left">
+          <label for="meeting-title">Meeting Title</label>
+          <input type="text" id="meeting-title" required />
+
+          <label for="meeting-location">Location</label>
+          <input type="text" id="meeting-location" required />
+
+          <label for="meeting-start">Start Time</label>
+          <input type="datetime-local" id="meeting-start" />
+
+          <label for="meeting-end">End Time</label>
+          <input type="datetime-local" id="meeting-end" />
+
+          <label for="steepness-slider">Time Distribution</label>
+          <p class="hint">Left = equal time for all topics. Right = more time for top priorities.</p>
+          <input type="range" id="steepness-slider" min="0" max="1" step="0.01" value="0.5" />
+          <p id="steepness-preview" class="hint"></p>
+
+          <div class="topics-section">
+            <label>Meeting Topics</label>
+            <div id="topics-list"></div>
+            <button type="button" id="add-topic-btn" class="btn btn-secondary">+ Add Topic</button>
+          </div>
+        </div>
+
+        <!-- Right column: employee list -->
+        <div class="form-right">
+          <label>Attendees</label>
+          <p class="hint">Select employees to include in the agenda.</p>
+          <ul id="employee-checklist" class="employee-checklist"></ul>
+        </div>
+
+      </div>
+
+      <div class="form-actions">
+        <button type="button" id="cancel-btn" class="btn btn-secondary">Cancel</button>
+        <button type="button" id="save-btn" class="btn btn-primary">Save</button>
+        <button type="button" id="generate-pdf-btn" class="btn btn-primary">Generate PDF</button>
+        <button type="button" id="email-btn" class="btn btn-primary">Email Attendees</button>
+      </div>
+    </form>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal-overlay" class="modal-overlay hidden">
+    <div class="modal">
+      <p id="modal-message"></p>
+      <div class="modal-actions">
+        <button id="modal-yes" class="btn btn-primary">Yes</button>
+        <button id="modal-no" class="btn btn-secondary">No</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+  <script type="module" src="js/meetings.js"></script>
+</body>
+</html>

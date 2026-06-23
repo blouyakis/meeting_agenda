@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meeting Generator – Dashboard</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <span class="nav-brand">Meeting Generator</span>
+    <div class="nav-links">
+      <a href="employees.html">Employees</a>
+      <button id="logout-btn" class="btn btn-primary">Log Out</button>
+    </div>
+  </nav>
+
+  <main class="dashboard-container">
+    <div class="dashboard-actions">
+      <a href="meetings.html" class="btn btn-primary">+ New Meeting</a>
+    </div>
+    <h2>Previous Meetings</h2>
+    <ul id="meetings-list" class="meetings-list">
+      <li class="placeholder">No meetings yet.</li>
+    </ul>
+  </main>
+  <script type="module" src="js/main.js"></script>
+  <script type="module" src="js/dashboard.js"></script>
+</body>
+</html>
