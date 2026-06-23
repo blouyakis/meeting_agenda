@@ -3,6 +3,7 @@
 Meeting Agenda Generator using Node, Express, MongoDB, ES6 Vanilla, HTML5
 
 ## Project Objective
+
 To build a full-stack web application that helps managers and teams generate structured meeting agendas. Users create meetings with topics, assign priority ranks, and use a time distribution slider to allocate meeting time across topics using a geometric decay algorithm. Agendas can be exported as PDFs or emailed directly to attendees.
 
 ## Class
@@ -16,10 +17,10 @@ A demo account has been pre-loaded with sample data so you can explore the appli
 
 ### Login Credentials
 
-| Field    | Value          |
-|----------|----------------|
-| Email    | demo@neu.edu   |
-| Password | Northeastern   |
+| Field    | Value        |
+| -------- | ------------ |
+| Email    | demo@neu.edu |
+| Password | Northeastern |
 
 ### What's Included
 
@@ -87,7 +88,7 @@ Then go to `http://localhost:3000` in your browser.
 ## Features
 
 - Create meetings with title, location, start/end times, topics, and attendees
-- Assign unique ranks to topics (1 = highest priority)
+- Assign unique priorities to topics (1 = highest priority)
 - Time Distribution slider — controls how aggressively time is front-loaded toward top-ranked topics
 - Live preview of time allocation per topic as you adjust the slider
 - Generate a formatted PDF agenda

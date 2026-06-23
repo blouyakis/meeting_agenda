@@ -25,7 +25,9 @@ export async function login(req, res, next) {
       return next(err);
     }
     if (!user) {
-      return res.status(401).json({ error: _info?.message || "Invalid credentials" });
+      return res
+        .status(401)
+        .json({ error: _info?.message || "Invalid credentials" });
     }
     const token = jwt.sign(
       { userId: user._id.toString() },

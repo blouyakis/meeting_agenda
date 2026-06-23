@@ -9,12 +9,11 @@ function generateWeights(N, steepness) {
 }
 
 function allocateMinutes(weights, totalMinutes) {
-  const N = weights.length;
   const floats = weights.map((w) => w * totalMinutes);
   const floored = floats.map((f) => Math.max(1, Math.floor(f)));
-  
+
   let sum = floored.reduce((a, b) => a + b, 0);
-  
+
   if (sum > totalMinutes) {
     const excess = sum - totalMinutes;
     const indices = floats
@@ -37,21 +36,26 @@ function allocateMinutes(weights, totalMinutes) {
 }
 
 function parseLocalDate(str) {
-  const [date, time] = str.split('T');
-  const [year, month, day] = date.split('-').map(Number);
-  const [hour, min] = time.split(':').map(Number);
+  const [date, time] = str.split("T");
+  const [year, month, day] = date.split("-").map(Number);
+  const [hour, min] = time.split(":").map(Number);
   return new Date(year, month - 1, day, hour, min);
 }
 
 function formatTime(date) {
   const h = date.getHours();
-  const min = String(date.getMinutes()).padStart(2, '0');
-  const ampm = h >= 12 ? 'PM' : 'AM';
+  const min = String(date.getMinutes()).padStart(2, "0");
+  const ampm = h >= 12 ? "PM" : "AM";
   const h12 = h % 12 || 12;
   return `${h12}:${min} ${ampm}`;
 }
 
-export function allocateTopicTimes(topics, startTime, endTime, steepness = 0.5) {
+export function allocateTopicTimes(
+  topics,
+  startTime,
+  endTime,
+  steepness = 0.5,
+) {
   if (!topics || topics.length === 0) return [];
   const start = parseLocalDate(startTime);
   const end = parseLocalDate(endTime);
@@ -59,7 +63,11 @@ export function allocateTopicTimes(topics, startTime, endTime, steepness = 0.5) 
   const sorted = [...topics].sort((a, b) => a.priority - b.priority);
   const N = sorted.length;
   if (totalMinutes < N) {
-    return sorted.map((t, i) => ({ ...t, topicStart: formatTime(new Date(start.getTime() + i * 60000)), minutes: 1 }));
+    return sorted.map((t, i) => ({
+      ...t,
+      topicStart: formatTime(new Date(start.getTime() + i * 60000)),
+      minutes: 1,
+    }));
   }
   const weights = generateWeights(N, steepness);
   const minutes = allocateMinutes(weights, totalMinutes);
