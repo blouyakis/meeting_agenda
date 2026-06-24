@@ -1,16 +1,10 @@
-import nodemailer from "nodemailer";
 import dotenv from "dotenv";
-dotenv.config();
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
 
-const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
-  port: Number(process.env.EMAIL_PORT),
-  //secure: true,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+dotenv.config({ path: join(__dirname, "../../.env") });
 
 export async function emailAgenda({
   to,
@@ -19,19 +13,40 @@ export async function emailAgenda({
   pdfBuffer,
   pdfFilename,
 }) {
-  await transporter.sendMail({
-    from: process.env.EMAIL_USER,
-    to: to.join(", "),
+  const recipients = (Array.isArray(to) ? to : [to]).map((email) => ({
+    email,
+  }));
+
+  const body = {
+    sender: {
+      name: process.env.EMAIL_FROM_NAME,
+      email: process.env.EMAIL_FROM,
+    },
+    to: recipients,
     subject,
-    html,
-    attachments: pdfBuffer
-      ? [
-          {
-            filename: pdfFilename || "agenda.pdf",
-            content: pdfBuffer,
-            contentType: "application/pdf",
-          },
-        ]
-      : [],
+    htmlContent: html,
+  };
+
+  if (pdfBuffer) {
+    body.attachment = [
+      {
+        name: pdfFilename || "agenda.pdf",
+        content: pdfBuffer.toString("base64"),
+      },
+    ];
+  }
+
+  const res = await fetch("https://api.brevo.com/v3/smtp/email", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "api-key": process.env.BREVO_API_KEY,
+    },
+    body: JSON.stringify(body),
   });
+
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.message || "Brevo email failed");
+  }
 }
