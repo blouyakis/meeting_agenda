@@ -15,7 +15,7 @@ Khoury College of Computer Sciences, Northeastern University
 
 The application is deployed and publicly accessible at: 
 
-https://meeting-agenda.onrender.com/dashboard.html
+https://meeting-agenda.onrender.com/auth.html
 
 A demo account has been pre-loaded with sample data so you can explore the application without creating an account or adding data manually.
 
@@ -25,6 +25,10 @@ A demo account has been pre-loaded with sample data so you can explore the appli
 | -------- | ------------ |
 | Email    | demo@neu.edu |
 | Password | Northeastern |
+
+## Slides
+
+[Click here to view the Slides](https://docs.google.com/presentation/d/e/2PACX-1vRxtoDcz0bmrLpbSBuwphHPjpGculzMoTpOXD1mjyrHgRWrAKngoTS7vtuAtrRqHsSLCJCMyF6jJRfM/pub?start=false&loop=false&delayms=3000)
 
 ### What's Included
 
