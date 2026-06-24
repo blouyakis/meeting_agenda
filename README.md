@@ -11,7 +11,11 @@ To build a full-stack web application that helps managers and teams generate str
 [CS 5610 Web Development](https://johnguerra.co/classes/webDevelopment_online_summer_2026/)
 Khoury College of Computer Sciences, Northeastern University
 
-## Demo Account
+## Live Demo
+
+The application is deployed and publicly accessible at: 
+
+https://meeting-agenda.onrender.com/auth.html
 
 A demo account has been pre-loaded with sample data so you can explore the application without creating an account or adding data manually.
 
@@ -22,6 +26,10 @@ A demo account has been pre-loaded with sample data so you can explore the appli
 | Email    | demo@neu.edu |
 | Password | Northeastern |
 
+## Slides
+
+[Click here to view the Slides](https://docs.google.com/presentation/d/e/2PACX-1vRxtoDcz0bmrLpbSBuwphHPjpGculzMoTpOXD1mjyrHgRWrAKngoTS7vtuAtrRqHsSLCJCMyF6jJRfM/pub?start=false&loop=false&delayms=3000)
+
 ### What's Included
 
 - 1,000 employees across multiple departments imported from Mockaroo
@@ -29,10 +37,14 @@ A demo account has been pre-loaded with sample data so you can explore the appli
 
 ### How to Access
 
+<<<<<<< HEAD
 Local:
 
 1. Start the server with `npm run dev`
 2. Go to `http://localhost:3000` in your browser
+=======
+1. Go to the live URL above
+>>>>>>> da785c981d8554e7f720c07bd304543aa992d06e
 3. Enter the credentials above and click **Log In**
 4. You will land on the dashboard where all 20 sample meetings are listed
 5. Click any meeting to view its agenda, export it as a PDF, or email it to attendees

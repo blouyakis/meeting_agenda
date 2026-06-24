@@ -40,7 +40,7 @@ URL: https://github.com/blouyakis/meeting_agenda
 
 ## Video Demonstration
 
-URL: https://...
+URL: https://northeastern.zoom.us/rec/play/6szcQz_vZ7E2tz6LoX41pDy1cxTQIAmtpcUeW0WxZWM76kMMMUk77onMXnq44wtaA0B6KToJVWWDRXuf.zpLkAehVXp1RPzQv?accessLevel=&canPlayFromShare=true&from=share_recording_detail&continueMode=true&oldStyle=true&componentName=rec-play&originRequestUrl=https%3A%2F%2Fnortheastern.zoom.us%2Frec%2Fshare%2FwCp4Im5RUSjlgBfjmW3KBRuMqTeyl7GxGQICqZKsHaawTHc7r7oFnIHMAUHEltFK.LnmooQ_yZy99Aj6s
 
 ---
 
