@@ -1,11 +1,3 @@
-import dotenv from "dotenv";
-import { fileURLToPath } from "url";
-import { dirname, join } from "path";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-dotenv.config({ path: join(__dirname, "../../.env") });
-
 export async function emailAgenda({
   to,
   subject,
@@ -13,16 +5,9 @@ export async function emailAgenda({
   pdfBuffer,
   pdfFilename,
 }) {
-  const recipients = (Array.isArray(to) ? to : [to]).map((email) => ({
-    email,
-  }));
-
   const body = {
-    sender: {
-      name: process.env.EMAIL_FROM_NAME,
-      email: process.env.EMAIL_FROM,
-    },
-    to: recipients,
+    sender: { name: "Agenda Agent", email: process.env.EMAIL_FROM },
+    to: (Array.isArray(to) ? to : [to]).map((email) => ({ email })),
     subject,
     htmlContent: html,
   };
