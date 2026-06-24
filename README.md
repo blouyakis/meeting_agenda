@@ -29,12 +29,16 @@ A demo account has been pre-loaded with sample data so you can explore the appli
 
 ### How to Access
 
+Local:
+
 1. Start the server with `npm run dev`
 2. Go to `http://localhost:3000` in your browser
 3. Enter the credentials above and click **Log In**
 4. You will land on the dashboard where all 20 sample meetings are listed
 5. Click any meeting to view its agenda, export it as a PDF, or email it to attendees
 6. Navigate to **Employees** to browse the full roster of 1,000 employees
+
+Or directly go to the live site: `https://meeting-agenda.onrender.com/auth.html`
 
 ### Resetting the Demo Data
 
@@ -70,11 +74,17 @@ PORT=3000
 MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/
 DB_NAME=ai_meeting_generator
 JWT_SECRET=<your_jwt_secret>
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USER=<your_email>
-EMAIL_PASS=<your_app_password>
+BREVO_API_KEY=<your_brevo_api_key>
+EMAIL_FROM=<your_verified_sender_email>
+EMAIL_FROM_NAME=Agenda Agent
+
 ```
+
+To obtain these values:
+
+- **MONGODB_URI** - create a free cluster at [mongodb.com/atlas](https://mongodb.com/atlas)
+- **BREVO_API_KEY** - sign up at [brevo.com](https://brevo.com) and generate an API key
+- **EMAIL_FROM** - a verified sender email in your Brevo account
 
 ### Running the App
 
