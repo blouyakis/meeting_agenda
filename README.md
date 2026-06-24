@@ -70,13 +70,13 @@ Create a `.env` file in the project root with the following:
 
 ```
 PORT=3000
-MONGODB_URI=mongodb+srv://meetingagenda:Northeastern@meeting-agenda.ueqoelw.mongodb.net/?appName=meeting-agenda
+MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/
 DB_NAME=ai_meeting_generator
-JWT_SECRET=mG7$kP2#xQ9!vL4nR8wY3jD6hA1sB5
+JWT_SECRET=<your_jwt_secret>
 EMAIL_HOST=smtp.gmail.com
 EMAIL_PORT=587
-EMAIL_USER=blouyakis@gmail.com
-EMAIL_PASS=sjcn hfgo iwmg frov
+EMAIL_USER=<your_email>
+EMAIL_PASS=<your_app_password>
 ```
 
 ### Running the App
@@ -139,6 +139,16 @@ frontend/
   employees.html / js/employees.js
   css/                    — Per-page CSS modules
 ```
+
+---
+
+## Screenshots
+
+![Login Page](frontend/images/screenshots/Login.png)
+![Dashboard](frontend/images/screenshots/Dashboard.png)
+![New Meeting](frontend/images/screenshots/Meeting_Form.png)
+![Agenda View](frontend/images/screenshots/Agenda.png)
+![Employee View](frontend/images/screenshots/Employees.png)
 
 ---
 

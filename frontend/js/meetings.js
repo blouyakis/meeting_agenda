@@ -60,9 +60,14 @@ function buildActionPanel(panel, selected = []) {
 }
 
 function updateActionTrigger(wrapper) {
-  const checked = [
-    ...wrapper.querySelectorAll(".action-panel input:checked"),
-  ].map((cb) => cb.value);
+  const panel =
+    wrapper.querySelector(".action-panel") ||
+    [...document.querySelectorAll(".action-panel")].find(
+      (p) => p._wrapper === wrapper,
+    );
+  const checked = panel
+    ? [...panel.querySelectorAll("input:checked")].map((cb) => cb.value)
+    : [];
   const trigger = wrapper.querySelector(".action-trigger");
   trigger.textContent =
     checked.length === 0 ? "Select action items..." : checked.join(", ");
@@ -90,6 +95,7 @@ function createActionDropdown(selected = []) {
 
   const panel = document.createElement("div");
   panel.className = "action-panel hidden";
+  panel._wrapper = wrapper;
 
   wrapper.appendChild(trigger);
   wrapper.appendChild(panel);
@@ -120,6 +126,10 @@ function createActionDropdown(selected = []) {
 
   panel.addEventListener("change", () => updateActionTrigger(wrapper));
 
+  panel.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
+
   document.addEventListener("click", () => {
     if (!panel.classList.contains("hidden")) {
       panel.classList.add("hidden");
@@ -131,9 +141,10 @@ function createActionDropdown(selected = []) {
     "scroll",
     () => {
       document.querySelectorAll(".action-panel").forEach((p) => {
-        p.classList.add("hidden");
         if (p.parentElement === document.body) {
+          p.classList.add("hidden");
           document.body.removeChild(p);
+          wrapper.appendChild(p);
         }
       });
     },
@@ -381,7 +392,12 @@ function showModal(message) {
 
 function getFormData() {
   const topics = [...document.querySelectorAll(".topic-row")].map((row) => {
-    const panel = row.querySelector(".action-panel");
+    const dropdown = row.querySelector(".action-dropdown");
+    const panel =
+      dropdown.querySelector(".action-panel") ||
+      [...document.querySelectorAll(".action-panel")].find(
+        (p) => p._wrapper === dropdown,
+      );
     const actionItems = panel
       ? [...panel.querySelectorAll("input:checked")].map((cb) => cb.value)
       : [];
