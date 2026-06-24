@@ -99,9 +99,12 @@
 }
 
 .action-panel {
-  position: fixed;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: auto;
+  right: 0;
+  width: 280px;
   z-index: 9999;
-  width: 240px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -245,4 +248,19 @@ input[type="range"]::-moz-range-thumb {
   width: auto !important;
   flex-shrink: 0;
   margin: 0;
+}
+
+.form-left,
+.topics-section,
+#topics-list,
+.topic-row,
+.topic-row-bottom,
+.action-dropdown {
+  overflow: visible;
+}
+
+.meeting-form-container,
+.form-columns,
+form {
+  overflow: visible;
 }

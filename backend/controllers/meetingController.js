@@ -7,7 +7,7 @@ export async function getMeetings(req, res) {
   const meetings = await db
     .collection("meetings")
     .find({ userId: req.userId })
-    .sort({ startTime: -1 })
+    .sort({ createdAt: -1 })
     .toArray();
   res.json(meetings);
 }
