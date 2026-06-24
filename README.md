@@ -77,11 +77,15 @@ PORT=3000
 MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/
 DB_NAME=ai_meeting_generator
 JWT_SECRET=<your_jwt_secret>
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USER=<your_email>
-EMAIL_PASS=<your_app_password>
+BREVO_API_KEY=<your_brevo_api_key>
+EMAIL_FROM=<your_verified_sender_email>
+EMAIL_FROM_NAME=Agenda Agent
 ```
+To obtain these values:
+- **MONGODB_URI**: create a free cluster at [mongodb.com/atlas](https://mongodb.com/atlas)
+- **JWT_SECRET**: any long random string
+- **BREVO_API_KEY**: sign up at [brevo.com](https://brevo.com) and generate an API key
+- **EMAIL_FROM**: a verified sender email in your Brevo account
 
 ### Running the App
 
