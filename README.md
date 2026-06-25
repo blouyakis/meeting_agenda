@@ -180,6 +180,7 @@ Specifically, Claude Sonnet 4.6 was used to generate the `demoUser.js` seed scri
 - URL: https://claude.ai
 - Date: June 2026
 
+
 ---
 
 ## License
