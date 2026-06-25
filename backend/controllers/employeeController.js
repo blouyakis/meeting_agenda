@@ -18,7 +18,7 @@ export async function addEmployee(req, res) {
   const result = await db.collection("employees").insertOne(employee);
   res.status(201).json({ _id: result.insertedId, ...employee });
 }
-
+ 
 export async function updateEmployee(req, res) {
   const db = getDB();
   const { id } = req.params;
