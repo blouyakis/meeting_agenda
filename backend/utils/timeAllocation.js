@@ -78,3 +78,4 @@ export function allocateTopicTimes(
     return { ...t, topicStart, minutes: minutes[i] };
   });
 }
+ 
