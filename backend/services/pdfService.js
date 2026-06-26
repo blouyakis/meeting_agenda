@@ -14,7 +14,7 @@ function formatDateTime(str) {
   const h12 = h % 12 || 12;
   return `${month}/${day}/${year}, ${h12}:${min} ${ampm}`;
 }
-
+ 
 export function generateAgendaPDF(meeting, attendees, steepness = 0.5) {
   return new Promise((resolve, reject) => {
     const doc = new PDFDocument({ bufferPages: true, margin: 0 });
