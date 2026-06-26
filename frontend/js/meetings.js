@@ -653,3 +653,4 @@ if (slider) {
     .querySelectorAll(".topic-text, .topic-priority")
     .forEach((el) => el.addEventListener("change", updatePreview));
 }
+ 
