@@ -6,3 +6,4 @@ export function createAgenda({ meetingId, steepness, items }) {
     items: items || [],
   };
 }
+ 
